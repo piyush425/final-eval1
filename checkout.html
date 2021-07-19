@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>payment gateway</title>
+</head>
+
+<body>
+    <h1>payment gateway</h1>
+
+    <form id="forms">
+        <input type="text" name="" id="cardno" placeholder="enter card no">
+        <input type="text" name="" id="cvv" placeholder="cvv">
+        <input type="text" name="" id="cpd" placeholder=" card expire date">
+
+    </form>
+
+    <button onclick="proceed()">Proceed</button>
+
+</body>
+
+</html>
+<script>
+    const data = [
+        {
+            cardno: "123456789",
+            cvv: "123",
+            expiredate: "2025"
+        }
+
+    ]
+
+    if (localStorage.getItem('card') == null) {
+        localStorage.setItem('card', JSON.stringify(data));
+    }
+    function proceed() {
+        let form = document.getElementById("forms")
+
+        let cardno = form.cardno.value
+        let cvv = form.cvv.value
+        let cpd = form.cpd.value
+
+        flag = false;
+
+        for (i = 0; i < data.length; i++) {
+            let u = data[i].cardno;
+            let p = data[i].cvv;
+            if (u == cardno && p == cvv) {
+                prompt("enter OTP")
+                alert("verification in processl! wait")
+                let promise = new Promise(function (resolve, reject) {
+                    setTimeout(function () {
+                        resolve("succesfull")
+                    }, 7000)
+
+                })
+                promise.then(function (res) {
+                    alert(res);
+                    document.location.href = "thank.html"
+
+                })
+
+
+
+
+                flag = true;
+                break;
+            }
+        }
+        if (flag == false) {
+            alert("wrong information");
+
+        }
+
+
+
+
+
+
+
+
+
+    }
+
+</script>

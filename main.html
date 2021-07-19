@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>flipkart</title>
+</head>
+<style>
+    img {
+        width: 30%;
+        height: 32%;
+    }
+
+    #data {
+        display: grid;
+        grid-template-columns: repeat(4, 20%);
+        grid-gap: 5%;
+    }
+</style>
+
+<body>
+    <h1>JWELLERY SHOP</h1>
+
+    <form action="" id="forms">
+        <input type="text" name="" id="name" placeholder="name">
+        <input type="text" name="" id="price" placeholder="price">
+        <input type="text" name="" id="image" placeholder="image">
+
+
+    </form>
+
+    <button onclick="addprod()">Add product</button>
+    <button onclick="showcart()">show cart</button>
+    <div id="data"></div>
+    <div id="sort"></div>
+
+</body>
+
+</html>
+<script>
+    let div_data = document.getElementById("data")
+
+    function addprod() {
+        let form = document.getElementById("forms")
+
+        let name = form.name.value
+        let price = form.price.value
+        let image = form.image.value
+
+        let product = {
+            name,
+            price,
+            image
+        }
+        let arr = localStorage.getItem('products')
+        if (arr == null) {
+            arr = []
+        } else {
+            arr = JSON.parse(localStorage.getItem('products'))
+
+        }
+        arr.push(product)
+        localStorage.setItem('products', JSON.stringify(arr))
+        showlocation()
+    }
+    function appendprod(e) {
+        sort = document.getElementById('sort')
+        let p_name = document.createElement('p')
+        p_name.innerHTML = e.name;
+
+        let p_price = document.createElement('p')
+        p_price.innerHTML = e.price;
+
+        let img = document.createElement('img')
+        img.src = e.image;
+
+        let btn = document.createElement('button')
+        btn.textContent = 'ADD TO CART'
+
+        btn.addEventListener('click', function () {
+            addcart(e);
+        })
+
+
+
+
+
+
+
+        div = document.createElement('div')
+        div.append(p_name, p_price, img, btn)
+        div_data.append(div)
+
+
+    }
+    function showlocation() {
+        data = JSON.parse(localStorage.getItem('products'))
+        div_data.innerHTML = null
+        btn1 = document.createElement("button");
+        btn1.innerHTML = "sort:low to high"
+
+        btn1.addEventListener('click', function () {
+            sortLH();
+        })
+
+        sort.append(btn1)
+
+        data.forEach(function (e) {
+            appendprod(e)
+
+        })
+    }
+    showlocation()
+
+    function addcart(object) {
+        let flag = false;
+        let arr;
+        arr = localStorage.getItem('cartvisited')
+        if (arr == null) {
+            arr = []
+        } else {
+            arr = JSON.parse(localStorage.getItem('cartvisited'))
+
+        }
+        for (i = 0; i < arr.length; i++) {
+            let N = arr[i].name
+            let P = arr[i].price
+            if (N == object.name && P == object.price) {
+                alert("already in your cart");
+                flag = true
+            }
+        }
+        if (flag == false) {
+            arr.push(object)
+
+        }
+        localStorage.setItem('cartvisited', JSON.stringify(arr))
+
+
+    }
+    function sortLH() {
+        let jwel = JSON.parse(localStorage.getItem("products"))
+
+        jwel.sort(function (a, b) {
+            return a.price - b.price
+
+        })
+    }
+
+
+
+    function showcart() {
+        window.location.href = 'cart.html'
+    }
+
+
+</script>
